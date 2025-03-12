@@ -12,9 +12,10 @@ async function copyTemplates() {
     // Copiar todos los archivos y directorios
     await fs.copy(srcDir, distDir, {
       filter: (src) => {
-        // Incluir solo archivos .template y directorios
-        return fs.statSync(src).isDirectory() || src.endsWith('.template');
-      }
+        const include = fs.statSync(src).isDirectory() || /\.(template|ts|js)$/.test(src);
+        console.log(`📂 Procesando: ${src} - Incluido: ${include}`);
+        return include;
+      },
     });
 
     console.log('✅ Templates copiados correctamente a dist/templates');
